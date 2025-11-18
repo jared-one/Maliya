@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy 19th Birthday, Maliya! 🎂✨</title>
+    <style>
+        :root {
+            --cosmic-primary: #000428;
+            --cosmic-secondary: #004e92;
+            --cosmic-accent: #b794f6;
+            --cosmic-glow: #9f7aea;
+            --cosmic-text: #f0e6ff;
+            --cosmic-pink: #ff6b9d;
+            --cosmic-gold: #ffd89b;
+            --scroll-progress: 0;
+            --mouse-x: 50%;
+            --mouse-y: 50%;
+            --hue-shift: 0;
+        }
+        /* … (all the original CSS unchanged – only the parts we need to change are listed below for brevity) … */
+        .audio-label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--cosmic-accent);
+            font-style: italic;
+            font-size: 1.1em;
+            position: relative;
+            z-index: 1;
+        }
+        .audio-subtitle {
+            display: block;
+            margin-bottom: 15px;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9em;
+            position: relative;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Performance Stats (unchanged) -->
+    <div class="perf-stats" id="perfStats">…</div>
+
+    <!-- Entry Overlay -->
+    <div class="entry-overlay" id="entryOverlay">
+        <div class="entry-content">
+            <h2 class="entry-title">Maliya's 19th Birthday ✨</h2>
+            <p class="entry-subtitle">A cosmic celebration just for you</p>
+            <button class="enter-button">Enter & Celebrate</button>
+        </div>
+    </div>
+
+    <!-- Canvas layers (unchanged) -->
+    <canvas id="starCanvas"></canvas>
+    <canvas id="shootingStarCanvas"></canvas>
+    <canvas id="orbCanvas"></canvas>
+    <canvas id="trailCanvas"></canvas>
+    <canvas id="sparkleCanvas"></canvas>
+
+    <div class="container" id="mainContainer">
+        <h1>Happy 19th Birthday, Maliya! 🎂✨</h1>
+       
+        <!-- Birthday Date Display -->
+        <div class="birthday-date">
+            <div class="day">🎂 Nineteen & Shining 🎂</div>
+            <div class="message">Today we celebrate you turning 19!</div>
+        </div>
+       
+        <!-- Audio Player – now loops both tracks seamlessly -->
+        <div class="audio-container">
+            <span class="audio-label">♪ Pisces - Tony Ann (Piano Cover) + fallen-down ♪</span>
+            <span class="audio-subtitle">A gentle melody for your special day</span>
+            <div class="audio-visual" id="audioVisual">
+                <div class="audio-bar"></div>
+                <div class="audio-bar"></div>
+                <div class="audio-bar"></div>
+                <div class="audio-bar"></div>
+                <div class="audio-bar"></div>
+                <div class="audio-bar"></div>
+                <div class="audio-bar"></div>
+            </div>
+
+            <audio id="bgMusic" preload="auto">
+                <source src="Pisces - Tony Ann (Piano Cover).mp3" type="audio/mpeg">
+                <source src="fallen-down.mp3" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+        </div>
+
+        <!-- Interactive Hint (unchanged) -->
+        <div class="interactive-hint">…</div>
+
+        <h2>A Little Note for You, Maliya</h2>
+        <div class="letter" id="letter">
+            <p>Hey Maliya,</p>
+
+            <p>Happy 19th birthday! Another trip around the sun and here we are — friends who always have a good vibe whenever we chat or hang out. I really appreciate how easy it is to get along with you; you’ve got that kind of energy that just makes things brighter.</p>
+
+            <p>I wanted to put together something special (and a little cosmic) to mark the day, because you absolutely deserve to feel celebrated. Nineteen looks good on you already, and I’m genuinely excited to see all the cool things this next year brings your way.</p>
+
+            <p>Thanks for being such a great friend — the kind of person who’s always fun to be around and who brings a smile without even trying. Here’s to more laughs, good music, and random adventures ahead!</p>
+
+            <p>Wishing you the happiest of birthdays filled with everything (and everyone) that makes you happy. You’re awesome, Maliya. Keep shining! ✨🎂</p>
+        </div>
+
+        <div class="birthday-wishes" id="birthdayWishes">
+            Here’s to an amazing year ahead full of joy, good company, and all your favorite things! ✨🎂💫
+        </div>
+    </div>
+
+    <script>
+        // … (all the original performance-optimized JS unchanged until the audio part)
+
+        const startExperience = async () => {
+            const entryOverlay = document.getElementById('entryOverlay');
+            const mainContainer = document.getElementById('mainContainer');
+            const bgMusic = document.getElementById('bgMusic');
+            const audioBars = document.querySelectorAll('.audio-bar');
+
+            entryOverlay.classList.add('hidden');
+
+            ['starCanvas', 'shootingStarCanvas', 'sparkleCanvas', 'trailCanvas', 'orbCanvas'].forEach(id => {
+                const canvas = document.getElementById(id);
+                if (canvas) canvas.classList.add('visible');
+            });
+
+            if (bgMusic) {
+                // Seamless looping of both tracks (plays first, then second, then repeats)
+                bgMusic.addEventListener('ended', function() {
+                    this.currentTime = 0;
+                    // If there are multiple sources, browser picks the first playable one.
+                    // To truly loop both together we switch sources or use a playlist logic:
+                    const sources = this.querySelectorAll('source');
+                    const currentSrc = this.currentSrc || '';
+                    const nextSrc = currentSrc.includes('Pisces') ? 'fallen-down.mp3' : 'Pisces - Tony Ann (Piano Cover).mp3';
+                    this.src = nextSrc;
+                    this.play();
+                });
+
+                try {
+                    await bgMusic.play();
+                    state.update({ isPlaying: true });
+                    audioBars.forEach(bar => bar.classList.add('playing'));
+                } catch (e) {
+                    const retryPlay = () => {
+                        bgMusic.play().then(() => {
+                            state.update({ isPlaying: true });
+                            audioBars.forEach(bar => bar.classList.add('playing'));
+                        });
+                    };
+                    document.addEventListener('click', retryPlay, { once: true, passive: true });
+                    document.addEventListener('touchstart', retryPlay, { once: true, passive: true });
+                }
+            }
+
+            setTimeout(() => {
+                mainContainer.classList.add('visible');
+                setupIntersectionObserver();
+            }, 500);
+
+            animationId = requestAnimationFrame(animate);
+        };
+
+        // … (rest of the original script completely unchanged)
+    </script>
+</body>
+</html>
